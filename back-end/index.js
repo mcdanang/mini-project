@@ -8,7 +8,7 @@ app.use(express.json())
 app.use(cors())
 
 app.get("/", (req, res) => {
-    res.send("This is my new API")
+    res.send("This is my latest API")
 })
 
 const { authRouter } = require("./routers")

@@ -21,6 +21,40 @@ module.exports = {
             res.status(400).send(err)
         }
     },
+    updateProduct : async (req, res) => {
+        try {    
+            const productId = req.params.productId;
+            
+            const existingProduct = await product.findOne({
+                where: {
+                    id: productId
+                }
+            })
+
+            if (!existingProduct) throw "Product id not found";
+
+            const newProduct = {...existingProduct};
+            const keys = Object.keys(req.body);
+            keys.forEach((key) => {
+                newProduct[key] = req.body[key];
+            }) 
+
+            const updateProduct = await product.update(
+                newProduct,
+                {
+                    where: {
+                        id: productId
+                    }
+                }
+            )
+            res.status(200).send({
+                message: "Product successfully updated",
+            })
+        } catch (err) {
+            console.log(err);
+            res.status(400).send(err)
+        }
+    },
     getProducts : async (req, res) => {
         try {
             res.status(200).send({

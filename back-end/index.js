@@ -11,8 +11,8 @@ app.get("/", (req, res) => {
     res.send("This is my third latest API")
 })
 
-const { authRouter, productRouter, categoryRouter } = require("./routers")
-app.use("/auth", authRouter)
+const { userRouter, productRouter, categoryRouter } = require("./routers")
+app.use("/user", userRouter)
 app.use("/product", productRouter)
 app.use("/category", categoryRouter)
 

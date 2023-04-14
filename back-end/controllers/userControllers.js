@@ -37,11 +37,14 @@ module.exports = {
         try {
             const { email, password } = req.body
 
-            if (!email || !password ) throw "Lengkapi Data"
+            // if (!email && !password ) throw "Username and password does not exist"
+            if(!email)throw "Please insert username"
+            if(!password) throw "Please insert password"
 
             const userExist = await user.findOne({
                 where: {
                     email
+
                 }
             })
 
@@ -54,15 +57,15 @@ module.exports = {
 
             if (!isvalid) throw {
                 status: false,
-                message: "Wrong password"
+                message: "Incorrect password"
             }
 
             const payload = { id: userExist.id }
-            const token = jwt.sign(payload, "JWT", { expiresIn: "1h"})
+            const token = jwt.sign(payload, process.env.KEY, { expiresIn: "1h"})
 
             res.status(200).send({
                 status: true,
-                message: "Login Succes",
+                message: "Login Success",
                 data: userExist,
                 token
             })

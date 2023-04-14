@@ -1,5 +1,7 @@
 const db = require("../models");
 const product = db.Product;
+const category = db.Category;
+const userStore = db.User_store;
 
 module.exports = {
     createProduct : async (req, res) => {
@@ -56,8 +58,28 @@ module.exports = {
     },
     getProducts : async (req, res) => {
         try {
+            const page = parseInt(req.query.p) || 1;
+            const pageSize = 8;
+
+            const categoryId = parseInt(req.query.c) || null;
+            console.log(categoryId);
+
+            const products = await product.findAll({
+                where: categoryId? { category_id: categoryId } : {},
+                include: [{
+                    model: category,
+                    attributes:["name"]
+                },{
+                    model: userStore,
+                    attributes:["store_name", "store_address"]
+                }],
+                limit: pageSize,
+                offset: (page - 1) * pageSize,
+            });
+
             res.status(200).send({
-                message: "Products retrieved"
+                message: "Products retrieved",
+                products
             })
         } catch (err) {
             console.log(err);

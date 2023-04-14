@@ -1,3 +1,4 @@
+const { Sequelize}=require("sequelize")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const db = require("../models")
@@ -6,24 +7,25 @@ const user = db.User
 module.exports = {
     register : async (req, res) => {
         try {
-            const {firstName, lastName, email, password} = req.body
+            const {username, email, password, address, phone} = req.body
 
-            if (!firstName || !lastName || !email || !password) throw "Lengkapi data"
+            if (!username|| !email || !password || !address || !phone) throw "Please fill all required information"
 
             const salt = await bcrypt.genSalt(10)
             const hashPass = await bcrypt.hash(password, salt)
 
             const result = await user.create({
-                firstName,
-                lastName,
+                username,
                 email,
-                password: hashPass
+                password: hashPass,
+                address,
+                phone
             })
 
             res.status(200).send({
                 status: true,
                 data: result,
-                message: "Register succes"
+                message: "Your account has been registered successfully "
             })
             
         } catch (err) {
@@ -66,6 +68,18 @@ module.exports = {
             })
         } catch (err) {
             console.log(err);
+            res.status(400).send(err)
+        }
+    },
+
+    getAllUser : async (req,res) =>{
+        try{
+            const data = await user.findAll()
+            res.status(200).send({
+                status: true,
+                data
+            })
+        }catch(err){
             res.status(400).send(err)
         }
     }

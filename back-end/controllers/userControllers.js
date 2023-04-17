@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken")
 const db = require("../models")
 const user = db.User
 const user_store = db.User_store
-const product = db.Product
 
 module.exports = {
     register: async (req, res) => {
@@ -110,21 +109,6 @@ module.exports = {
         }catch(err){
             res.status(400).send(err)
         }
-    },
-
-    filterProduct: async (req,res) => {
-        try{
-            const filteredProduct = await product.findAll({
-                where: {
-                    name: req.body.name
-                }
-            })
-            res.status(200).send({
-                status: true,
-                data: filteredProduct
-            })
-        }catch(err){
-            res.status(400).send(err)
-        }
     }
+   
 }

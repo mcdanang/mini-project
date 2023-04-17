@@ -2,6 +2,7 @@ const db = require("../models");
 const product = db.Product;
 const category = db.Category;
 const userStore = db.User_store;
+const { Op } = require("sequelize");
 
 module.exports = {
     createProduct : async (req, res) => {
@@ -62,10 +63,16 @@ module.exports = {
             const pageSize = 8;
 
             const categoryId = parseInt(req.query.c) || null;
-            console.log(categoryId);
+            const productName = req.query.n || null;
+
+            const categoryQuery = categoryId? { category_id: categoryId } : {};
+            const productQuery = productName? { name: {[Op.like]: '%' + productName + '%'} } : {};
 
             const products = await product.findAll({
-                where: categoryId? { category_id: categoryId } : {},
+                where: {
+                    ...categoryQuery,
+                    ...productQuery
+                },
                 include: [{
                     model: category,
                     attributes:["name"]

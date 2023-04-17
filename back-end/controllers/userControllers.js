@@ -11,7 +11,9 @@ module.exports = {
             const {username, email, password, address, phone, store_name, store_address} = req.body
     
             if (!username || !email || !password || !address || !phone || !store_name || !store_address) {
-                throw "Please fill all required information"
+                throw {
+                    message: "Please fill all required information"
+                }
             }
     
             const salt = await bcrypt.genSalt(10)
@@ -29,7 +31,6 @@ module.exports = {
                 store_name,
                 store_address,
                 user_id: userResult.id
-                
             })
            
             res.status(200).send({
@@ -51,25 +52,26 @@ module.exports = {
             const { username, password } = req.body
 
             // if (!username && !password ) throw "Username and password does not exist"
-            if(!username)throw "Please insert username"
-            if(!password) throw "Please insert password"
+            if(!username) throw {
+                message: "Please insert username"
+            }
+            if(!password) throw {
+                message: "Please insert password"
+            }
 
             const userExist = await user.findOne({
                 where: {
                     username
-
                 }
             })
 
             if (!userExist) throw {
-                status: false,
                 message: "User not found"
             }
 
             const isvalid = await bcrypt.compare(password, userExist.password)
 
             if (!isvalid) throw {
-                status: false,
                 message: "Incorrect password"
             }
 
@@ -91,22 +93,31 @@ module.exports = {
         try{
             const data = await user.findAll()
             res.status(200).send({
-                status: true,
+                message: "Sucessfully get all users data",
                 data
             })
         }catch(err){
+            console.log(err);
             res.status(400).send(err)
         }
     },
 
     deleteById: async (req,res) => {
         try{
-            const terhapus = await user.destroy({where:{id: req.params.id}})
+            const userExist = await user.findOne({
+                where: {id: req.params.id},
+                include: user_store
+            })
+            if (!userExist) throw {
+                message: "User ID not found"
+            }
+            const deletedUserStore = await user_store.destroy({where:{user_id: userExist.User_store.user_id}})
+            const deletedUser = await user.destroy({where:{id: userExist.id}})
             res.status(200).send({
-                status:true,
-                message: "Data is Deleted"
+                message: `Data user_id ${req.params.id} is successfully deleted`
             })
         }catch(err){
+            console.log(err);
             res.status(400).send(err)
         }
     }

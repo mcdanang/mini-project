@@ -63,7 +63,16 @@ module.exports = {
             const pageSize = 8;
 
             const categoryId = parseInt(req.query.c) || null;
-            const productName = req.query.n || null;
+            const productName = req.query.q || null;
+            const sortType = req.query.s || "none";
+
+            const sortMap = {
+                az: ["name", "ASC"],
+                za: ["name", "DESC"],
+                lh: ["price", "ASC"],
+                hl: ["price", "DESC"],
+                none: null
+            };
 
             const categoryQuery = categoryId? { category_id: categoryId } : {};
             const productQuery = productName? { name: {[Op.like]: '%' + productName + '%'} } : {};
@@ -82,6 +91,7 @@ module.exports = {
                 }],
                 limit: pageSize,
                 offset: (page - 1) * pageSize,
+                order: [sortMap[sortType]]
             });
 
             res.status(200).send({

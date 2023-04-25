@@ -123,7 +123,7 @@ module.exports = {
     },
 
     deleteById: async (req,res) => {
-        try{
+        try {
             const userExist = await user.findOne({
                 where: {id: req.params.id},
                 include: user_store
@@ -136,7 +136,7 @@ module.exports = {
             res.status(200).send({
                 message: `Data user_id ${req.params.id} is successfully deleted`
             })
-        }catch(err){
+        } catch(err) {
             console.log(err);
             res.status(400).send(err)
         }

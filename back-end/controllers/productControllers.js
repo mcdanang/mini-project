@@ -19,6 +19,7 @@ module.exports = {
             })
             res.status(200).send({
                 message: "Product successfully created",
+                data: newProduct
             })
         } catch (err) {
             console.log(err);
@@ -57,6 +58,7 @@ module.exports = {
             )
             res.status(200).send({
                 message: "Product successfully updated",
+                data: newProduct
             })
         } catch (err) {
             console.log(err);

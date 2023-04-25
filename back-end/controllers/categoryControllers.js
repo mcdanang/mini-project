@@ -9,7 +9,8 @@ module.exports = {
                 name
             })
             res.status(200).send({
-                message: "New category successfully created"
+                message: "New category successfully created",
+                data: newCategory
             })
         } catch (err) {
             console.log(err);
@@ -44,7 +45,8 @@ module.exports = {
             )
             
             res.status(200).send({
-                message: "Category successfully updated"
+                message: "Category successfully updated",
+                data: newCategory
             })
         } catch (err) {
             console.log(err);

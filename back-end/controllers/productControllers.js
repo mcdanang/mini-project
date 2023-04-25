@@ -9,7 +9,9 @@ module.exports = {
         try {
             const { name, description, price, category_id, image_url, store_id } = req.body;
             if (!name || !description || !price || !category_id || !image_url || !store_id) {
-                throw "Please complete required product data"
+                throw {
+                    message: "Please complete required product data"
+                }
             }
 
             const newProduct = await product.create({
@@ -26,14 +28,18 @@ module.exports = {
     updateProduct : async (req, res) => {
         try {    
             const productId = req.params.productId;
+            const storeId = req.storeId;
             
             const existingProduct = await product.findOne({
                 where: {
-                    id: productId
+                    id: productId,
+                    store_id: storeId,
                 }
             })
 
-            if (!existingProduct) throw "Product id not found";
+            if (!existingProduct) throw {
+                message: "Product id not found"
+            }
 
             const newProduct = {...existingProduct};
             const keys = Object.keys(req.body);
@@ -60,23 +66,23 @@ module.exports = {
     getProducts : async (req, res) => {
         try {
             const page = parseInt(req.query.p) || 1;
-            const pageSize = 8;
+            const pageSize = 9;
 
             const categoryId = parseInt(req.query.c) || null;
             const productName = req.query.q || null;
             const sortType = req.query.s || "none";
 
             const sortMap = {
-                az: ["name", "ASC"],
-                za: ["name", "DESC"],
-                lh: ["price", "ASC"],
-                hl: ["price", "DESC"],
+                az: [["name", "ASC"]],
+                za: [["name", "DESC"]],
+                lh: [["price", "ASC"]],
+                hl: [["price", "DESC"]],
                 none: null
             };
 
             const categoryQuery = categoryId? { category_id: categoryId } : {};
             const productQuery = productName? { name: {[Op.like]: '%' + productName + '%'} } : {};
-
+            
             const products = await product.findAll({
                 where: {
                     ...categoryQuery,
@@ -91,7 +97,7 @@ module.exports = {
                 }],
                 limit: pageSize,
                 offset: (page - 1) * pageSize,
-                order: [sortMap[sortType]]
+                order: sortMap[sortType],
             });
 
             res.status(200).send({

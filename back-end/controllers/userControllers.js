@@ -51,7 +51,6 @@ module.exports = {
         try {
             const { username, password } = req.body
 
-            // if (!username && !password ) throw "Username and password does not exist"
             if(!username) throw {
                 message: "Please insert username"
             }
@@ -62,12 +61,14 @@ module.exports = {
             const userExist = await user.findOne({
                 where: {
                     username
-                }
+                },
             })
 
             if (!userExist) throw {
                 message: "User not found"
             }
+
+            console.log(userExist);
 
             const isvalid = await bcrypt.compare(password, userExist.password)
 
@@ -89,12 +90,31 @@ module.exports = {
         }
     },
 
-    getAllUser : async (req,res) =>{
+    getAllUser : async (req,res) => {
         try{
             const data = await user.findAll()
             res.status(200).send({
                 message: "Sucessfully get all users data",
                 data
+            })
+        }catch(err){
+            console.log(err);
+            res.status(400).send(err)
+        }
+    },
+
+    getUser : async (req,res) => {
+        try{
+            const userExist = await user.findOne({
+                where: {id: req.params.id},
+                include: user_store
+            })
+            if (!userExist) throw {
+                message: "User ID not found"
+            }
+            res.status(200).send({
+                message: `Sucessfully get data for user_id ${req.params.id}`,
+                userExist
             })
         }catch(err){
             console.log(err);

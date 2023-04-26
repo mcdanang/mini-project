@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
-const db = require("../models")
-const user_store = db.User_store
+const db = require("../models");
+const user_store = db.User_store;
 
 module.exports = {
   isLogin : async (req, res, next) => {
@@ -21,7 +21,7 @@ module.exports = {
       req.storeId = userStoreData.id;
       // console.log(req);
       next();
-      
+
     } catch (err) {
       console.log(err);
       res.status(400).send(err)

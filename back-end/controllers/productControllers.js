@@ -85,7 +85,7 @@ module.exports = {
             const categoryQuery = categoryId? { category_id: categoryId } : {};
             const productQuery = productName? { name: {[Op.like]: '%' + productName + '%'} } : {};
             
-            const products = await product.findAll({
+            const products = await product.findAndCountAll({
                 where: {
                     ...categoryQuery,
                     ...productQuery
@@ -104,7 +104,8 @@ module.exports = {
 
             res.status(200).send({
                 message: "Products retrieved",
-                products
+                products: products.rows,
+                count: products.count,
             })
         } catch (err) {
             console.log(err);

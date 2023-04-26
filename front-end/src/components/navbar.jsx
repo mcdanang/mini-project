@@ -1,14 +1,27 @@
-import { Avatar, Button, Flex, VStack, Text, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
+import {
+  Avatar,
+  Button,
+  Flex,
+  VStack,
+  Text,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { connect } from "react-redux";
 
 export const Navbar = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const username = localStorage.getItem("username");
 
   const onSignOut = () => {
-    localStorage.removeItem("token")
-    navigate("/login")
-  }
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    navigate("/login");
+  };
 
   return (
     <VStack
@@ -24,18 +37,18 @@ export const Navbar = () => {
           <>
             <Menu>
               <Avatar
-              as={MenuButton}
+                as={MenuButton}
                 name="Dan Abrahmov"
                 src="https://bit.ly/dan-abramov"
                 mr="2"
               />
               <MenuList>
-                <MenuItem>Profile</MenuItem>
-                <MenuItem>Setting</MenuItem>
+                <MenuItem>Show Profile Page</MenuItem>
+                <MenuItem>Show Store Page</MenuItem>
                 <MenuItem onClick={onSignOut}>Sign Out</MenuItem>
               </MenuList>
             </Menu>
-            <Text as="b">User Login</Text>
+            <Text as="b">{username}</Text>
           </>
         ) : (
           <>
@@ -63,4 +76,10 @@ export const Navbar = () => {
       </Flex>
     </VStack>
   );
+};
+
+const mapStateToProps = (state) => {
+  return {
+    todoGlobalState: state,
+  };
 };

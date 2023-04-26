@@ -17,8 +17,8 @@ import {
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
-import Swal from 'sweetalert2'
-import axios from "axios"
+import Swal from "sweetalert2";
+import axios from "axios";
 
 export const RegistrationForm = () => {
   const navigate = useNavigate();
@@ -26,46 +26,56 @@ export const RegistrationForm = () => {
 
   const onRegister = async () => {
     try {
-        const data = {
-            firstName: document.getElementById("firstName").value,
-            lastName: document.getElementById("lastName").value,
-            email: document.getElementById("email").value,
-            password: document.getElementById("password").value
-        }
+      const data = {
+        username: document.getElementById("username").value,
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value,
+        address: document.getElementById("address").value,
+        phone: document.getElementById("phone").value,
+        store_name: document.getElementById("store_name").value,
+        store_address: document.getElementById("store_address").value,
+      };
 
-        const result = await axios.post("http://localhost:2000/auth/register", data)
+      const result = await axios.post(
+        "http://localhost:2000/user/register",
+        data
+      );
 
-        document.getElementById("firstName").value = ""
-        document.getElementById("lastName").value = ""
-        document.getElementById("email").value = ""
-        document.getElementById("password").value = ""
+      document.getElementById("username").value = "";
+      document.getElementById("email").value = "";
+      document.getElementById("password").value = "";
+      document.getElementById("address").value = "";
+      document.getElementById("phone").value = "";
+      document.getElementById("store_name").value = "";
+      document.getElementById("store_address").value = "";
 
-        Swal.fire({
-          icon: 'success',
-          title: result.data.message,
-          showConfirmButton: false,
-          timer: 1500
-        })
-        
+      await Swal.fire({
+        icon: "success",
+        title: result.data.message,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      navigate("/login");
     } catch (err) {
-        console.log(err);
-        if (err.response.data) {
-          Swal.fire({
-            icon: 'error',
-            title: err.response.data,
-            showConfirmButton: false,
-            timer: 1500
-          })
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: err.response.data.errors[0].message,
-            showConfirmButton: false,
-            timer: 1500
-          })
-        }
+      console.log(err);
+      if (err.response.data) {
+        Swal.fire({
+          icon: "error",
+          title: err.response.data,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: err.response.data.errors[0].message,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
     }
-  }
+  };
 
   return (
     <Flex
@@ -73,8 +83,9 @@ export const RegistrationForm = () => {
       align={"center"}
       justify={"center"}
       bg={useColorModeValue("gray.50", "gray.800")}
+      w="100%"
     >
-      <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
+      <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6} w="100%">
         <Stack align={"center"}>
           <Heading fontSize={"4xl"} textAlign={"center"}>
             Sign up
@@ -82,12 +93,13 @@ export const RegistrationForm = () => {
         </Stack>
         <Box
           rounded={"lg"}
+          maxW="300%"
           bg={useColorModeValue("white", "gray.700")}
           boxShadow={"lg"}
-          p={8}
+          p={10}
         >
           <Stack spacing={4}>
-            <HStack>
+            {/* <HStack>
               <Box>
                 <FormControl id="firstName" isRequired>
                   <FormLabel>First Name</FormLabel>
@@ -100,11 +112,17 @@ export const RegistrationForm = () => {
                   <Input type="text" />
                 </FormControl>
               </Box>
-            </HStack>
+            </HStack> */}
+            <FormControl id="username" isRequired>
+              <FormLabel>Username</FormLabel>
+              <Input type="text" width="100%" />
+            </FormControl>
+
             <FormControl id="email" isRequired>
               <FormLabel>Email address</FormLabel>
               <Input type="email" />
             </FormControl>
+
             <FormControl id="password" isRequired>
               <FormLabel>Password</FormLabel>
               <InputGroup>
@@ -121,6 +139,27 @@ export const RegistrationForm = () => {
                 </InputRightElement>
               </InputGroup>
             </FormControl>
+
+            <FormControl id="address" isRequired>
+              <FormLabel>Address</FormLabel>
+              <Input type="text" />
+            </FormControl>
+
+            <FormControl id="phone" isRequired>
+              <FormLabel>Phone</FormLabel>
+              <Input type="text" />
+            </FormControl>
+
+            <FormControl id="store_name" isRequired>
+              <FormLabel>Store Name</FormLabel>
+              <Input type="text" />
+            </FormControl>
+
+            <FormControl id="store_address" isRequired>
+              <FormLabel>Store Address</FormLabel>
+              <Input type="text" />
+            </FormControl>
+
             <Stack spacing={10} pt={2}>
               <Button
                 loadingText="Submitting"

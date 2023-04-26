@@ -21,12 +21,14 @@ export const LoginForm = () => {
   const onLogin = async () => {
     try {
       const data = {
-        email: document.getElementById("email").value,
+        username: document.getElementById("username").value,
         password: document.getElementById("password").value,
       };
-      const result = await axios.post("http://localhost:2000/auth/login", data);
 
-      document.getElementById("email").value = "";
+      console.log(data);
+      const result = await axios.post("http://localhost:2000/user/login", data);
+
+      document.getElementById("username").value = "";
       document.getElementById("password").value = "";
 
       Swal.fire({
@@ -37,6 +39,7 @@ export const LoginForm = () => {
       });
 
       localStorage.setItem("token", result.data.token);
+      localStorage.setItem("username", result.data.data.username);
       setTimeout(() => {
         navigate("/");
       }, 1500);
@@ -45,7 +48,7 @@ export const LoginForm = () => {
       if (err.response.data) {
         Swal.fire({
           icon: "error",
-          title: err.response.data,
+          title: "username or password does not exist",
           showConfirmButton: false,
           timer: 1500,
         });
@@ -78,8 +81,8 @@ export const LoginForm = () => {
           p={8}
         >
           <Stack spacing={4}>
-            <FormControl id="email">
-              <FormLabel>Email address</FormLabel>
+            <FormControl id="username">
+              <FormLabel>Username</FormLabel>
               <Input type="email" />
             </FormControl>
             <FormControl id="password">

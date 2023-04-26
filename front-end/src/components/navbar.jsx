@@ -10,7 +10,6 @@ import {
   MenuItem,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { connect } from "react-redux";
 
 export const Navbar = () => {
   const navigate = useNavigate();
@@ -76,10 +75,4 @@ export const Navbar = () => {
       </Flex>
     </VStack>
   );
-};
-
-const mapStateToProps = (state) => {
-  return {
-    todoGlobalState: state,
-  };
 };

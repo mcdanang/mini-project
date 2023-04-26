@@ -5,22 +5,37 @@ import {
   Text,
   Stack,
   Image,
-  SimpleGrid
+  SimpleGrid,
+  HStack,
+  Select,
+  Input,
+  Wrap
 } from '@chakra-ui/react';
 import axios from "axios";
 import { useState, useEffect } from 'react';
-// import { Ticketing } from "./ticketing";
+import { MdOutlineStorefront } from "react-icons/md";
+import { Pagination } from 'semantic-ui-react'
+import 'semantic-ui-css/semantic.min.css'
 
 export function Products() {
   const [products, setProducts] = useState([]);
+  const [activePage, setActivePage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
+  const [apiUrl, setApiUrl] = useState('http://localhost:2000/product');
 
   useEffect(() => {
     async function getProducts() {
-      const productData = await axios.get('http://localhost:2000/product') 
+      const productData = await axios.get(apiUrl) 
       setProducts(productData.data.products);
+      setTotalPage(Math.ceil(productData.data.count / 9));
     }
     getProducts();
-  }, [])
+  }, [apiUrl])
+
+  const onChange = (e, pageInfo) => {
+  	setActivePage(pageInfo.activePage);
+    setApiUrl('http://localhost:2000/product?p=' + pageInfo.activePage.toString());
+  };
   
   console.log(products);
   function rupiah(price) {
@@ -37,102 +52,125 @@ export function Products() {
   }
 
   return (
-    <Stack spacing={8} mx={"auto"} w={"80%"} py={12} px={6}>
-      <Stack align={"center"}>
+    <>
+      <Stack align={"center"} my={10}>
         <Heading fontSize={"4xl"} textAlign={"center"}>
-          New Products!
+          Products
         </Heading>
       </Stack>
-      <Center py={12}>
-        <SimpleGrid columns={[1, null, 2, null, 3]} spacing={5}>
-          {products.map((product) => {
-            return (
-              <Box
-                key={product.id}
-                role={'group'}
-                p={6}
-                maxW={'330px'}
-                w={'full'}
-                bg={'white'}
-                boxShadow={'2xl'}
-                rounded={'lg'}
-                pos={'relative'}
-                zIndex={1}
-                mb={10}>
-                <Box
-                  rounded={'lg'}
-                  mt={-12}
-                  pos={'relative'}
-                  height={'230px'}
-                  _after={{
-                    transition: 'all .3s ease',
-                    content: '""',
-                    w: 'full',
-                    h: 'full',
-                    pos: 'absolute',
-                    top: 5,
-                    left: 0,
-                    backgroundImage: `url(${product.image_url})`,
-                    filter: 'blur(15px)',
-                    zIndex: -1,
-                  }}
-                  _groupHover={{
-                    _after: {
-                      filter: 'blur(20px)',
-                    },
-                  }}>
-                  <Image
-                    rounded={'lg'}
-                    height={230}
-                    width={282}
-                    objectFit={'cover'}
-                    src={product.image_url}
-                  />
-                </Box>
-                <Stack pt={10} align={'center'}>
-                <Text color={'gray.500'} fontSize={'sm'}>
-                  {product.description}
-                </Text>
-                <Heading fontSize={'2xl'} fontFamily={'body'} fontWeight={500} textTransform={'uppercase'}>
-                  {product.name}
-                </Heading>
-                <Stack direction={'row'} align={'center'}>
-                  <Text fontWeight={800} fontSize={'xl'}>
-                    {rupiah(product.price)}
-                  </Text>
-                </Stack>
-                <Text color={'gray.600'}>
-                    {product.User_store.store_name}
-                </Text>
-              </Stack>
-              </Box>
-            )
-          })}
-        {/* {products.rows.map((product) => {
-          
-              
-              <Stack pt={10} align={'center'}>
-                <Text color={'gray.500'} fontSize={'sm'}>
-                  {product.description}
-                </Text>
-                <Heading fontSize={'2xl'} fontFamily={'body'} fontWeight={500} textTransform={'uppercase'}>
-                  {product.name}
-                </Heading>
-                <Stack direction={'row'} align={'center'}>
-                  <Text fontWeight={800} fontSize={'xl'}>
-                    {rupiah(product.price)}
-                  </Text>
-                </Stack>
-                <Text color={'gray.600'}>
-                    {product.User_store.store_name}
-                </Text>
-                <Ticketing detail={product}/>
-              </Stack>
-            </Box>
-          )
-        })} */}
-        </SimpleGrid>
+
+      <Center>
+        <Stack spacing={5}>
+          <HStack>
+            <Stack w={200}>
+              <Text fontWeight={600} fontSize={'lg'}>
+                Sort:
+              </Text>
+            </Stack>
+            <Select placeholder='Select option'>
+              <option value='option1'>Option 1</option>
+              <option value='option2'>Option 2</option>
+              <option value='option3'>Option 3</option>
+            </Select>
+          </HStack>
+          <HStack>
+            <Stack w={200}>
+              <Text fontWeight={600} fontSize={'lg'}>
+                Category:
+              </Text>
+            </Stack>
+            <Select placeholder='Select option'>
+              <option value='option1'>Option 1</option>
+              <option value='option2'>Option 2</option>
+              <option value='option3'>Option 3</option>
+            </Select>
+          </HStack>
+          <HStack>
+            <Stack  w={200}>
+              <Text fontWeight={600} fontSize={'lg'}>
+                Filter by name:
+              </Text>
+            </Stack>
+            <Input placeholder='Ex: Adidas' />
+          </HStack>
+        </Stack>
       </Center>
-    </Stack>
+
+      <Stack spacing={8} mx={"auto"} w={"80%"} py={12} px={6}>
+        <Center py={12}>
+          <SimpleGrid columns={[1, null, 2, null, 3]} spacing={5}>
+            {products.map((product) => {
+              return (
+                <Box
+                  key={product.id}
+                  role={'group'}
+                  p={6}
+                  maxW={'330px'}
+                  w={'full'}
+                  bg={'white'}
+                  boxShadow={'2xl'}
+                  rounded={'lg'}
+                  pos={'relative'}
+                  zIndex={1}
+                  mb={10}>
+                  <Box
+                    rounded={'lg'}
+                    mt={-12}
+                    pos={'relative'}
+                    height={'230px'}
+                    _after={{
+                      transition: 'all .3s ease',
+                      content: '""',
+                      w: 'full',
+                      h: 'full',
+                      pos: 'absolute',
+                      top: 5,
+                      left: 0,
+                      backgroundImage: `url(${product.image_url})`,
+                      filter: 'blur(15px)',
+                      zIndex: -1,
+                    }}
+                    _groupHover={{
+                      _after: {
+                        filter: 'blur(20px)',
+                      },
+                    }}>
+                    <Image
+                      rounded={'lg'}
+                      height={230}
+                      width={282}
+                      objectFit={'cover'}
+                      src={product.image_url}
+                    />
+                  </Box>
+                  <Stack pt={10} align={'center'}>
+                    <Heading fontSize={'2xl'} fontFamily={'body'} fontWeight={500} textTransform={'uppercase'}>
+                      {product.name}
+                    </Heading>
+                    <Text color={'gray.500'} fontSize={'sm'} noOfLines={1}>
+                      {product.description}
+                    </Text>
+                    <Stack direction={'row'} align={'center'}>
+                      <Text fontWeight={800} fontSize={'xl'}>
+                        {rupiah(product.price)}
+                      </Text>
+                    </Stack>
+                    <HStack>
+                      <MdOutlineStorefront/>
+                      <Text color={'gray.600'} noOfLines={1}>
+                          {product.User_store.store_name} | {product.User_store.store_address}
+                      </Text>
+                    </HStack>
+                  </Stack>
+                </Box>
+              )
+            })}
+          </SimpleGrid>
+        </Center>
+        <Center>
+          <Pagination activePage={activePage} totalPages={totalPage} onPageChange={onChange}/>
+        </Center>
+      </Stack>
+    </>
   );
 }

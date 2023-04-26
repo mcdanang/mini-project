@@ -48,7 +48,7 @@ export const LoginForm = () => {
       if (err.response.data) {
         Swal.fire({
           icon: "error",
-          title: err.response.data,
+          title: "username or password does not exist",
           showConfirmButton: false,
           timer: 1500,
         });

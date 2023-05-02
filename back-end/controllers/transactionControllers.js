@@ -1,24 +1,26 @@
 const {Sequelize} = require("sequelize")
 const db = require("../models")
-const product = db.Product
+const Product = db.Product
 const transDetail = db.Transaction_detail
 const transHead = db.Transaction_header
 
 module.exports = {
     createTransaction: async(req,res) => {
         try{
-            const { product_name, product_price, ProductId, qty,total_price} = req.body
+            const { product_name, qty} = req.body
+
+            const product = await Product.findOne({where : {name: product_name}})
             
             const headerTransaction = await transHead.create({
-                total_price,
+                total_price: product.price * qty,
                 date: new Date().toString(), 
                 user_id: req.userId,
             })
             const newTransaction = await transDetail.create({
                 qty,
                 product_name,
-                product_price,
-                ProductId,
+                product_price: product.price,
+                ProductId:product.id,
                 TransactionHeaderId: headerTransaction.id
             })
             res.status(200).send({

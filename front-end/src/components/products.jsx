@@ -9,7 +9,6 @@ import {
   HStack,
   Select,
   Input,
-  Wrap
 } from '@chakra-ui/react';
 import axios from "axios";
 import { useState, useEffect } from 'react';
@@ -18,26 +17,40 @@ import { Pagination } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css'
 
 export function Products() {
+  //states for fetching products & categories data
   const [products, setProducts] = useState([]);
-  const [activePage, setActivePage] = useState(1);
+  const [categories, setCategories] = useState([]);
+
   const [totalPage, setTotalPage] = useState(1);
   const [apiUrl, setApiUrl] = useState('http://localhost:2000/product');
 
+  //states for query string
+  const [activePage, setActivePage] = useState(1);
+  const [sortType, setSortType] = useState('');
+  const [category, setCategory] = useState('');
+  const [query, setQuery] = useState('');
+
   useEffect(() => {
     async function getProducts() {
-      const productData = await axios.get(apiUrl) 
+      setApiUrl(
+        'http://localhost:2000/product?' + 
+        'p=' + activePage +
+        '&s=' + sortType +
+        '&c=' + category +
+        '&q=' + query
+      );
+      console.log(apiUrl);
+
+      const categoryData = await axios.get("http://localhost:2000/category");
+      setCategories(categoryData.data.categories);
+
+      const productData = await axios.get(apiUrl);
       setProducts(productData.data.products);
       setTotalPage(Math.ceil(productData.data.count / 9));
     }
     getProducts();
-  }, [apiUrl])
-
-  const onChange = (e, pageInfo) => {
-  	setActivePage(pageInfo.activePage);
-    setApiUrl('http://localhost:2000/product?p=' + pageInfo.activePage.toString());
-  };
+  }, [apiUrl, activePage, sortType, category, query])
   
-  console.log(products);
   function rupiah(price) {
     const priceString = price.toString();
     const len = priceString.length;
@@ -67,10 +80,11 @@ export function Products() {
                 Sort:
               </Text>
             </Stack>
-            <Select placeholder='Select option'>
-              <option value='option1'>Option 1</option>
-              <option value='option2'>Option 2</option>
-              <option value='option3'>Option 3</option>
+            <Select placeholder='Select option' value={sortType} onChange={e => setSortType(e.target.value)} >
+              <option value='lh'>Lowest Price</option>
+              <option value='hl'>Highest Price</option>
+              <option value='az'>Name (A to Z)</option>
+              <option value='za'>Name (Z to A)</option>
             </Select>
           </HStack>
           <HStack>
@@ -79,10 +93,8 @@ export function Products() {
                 Category:
               </Text>
             </Stack>
-            <Select placeholder='Select option'>
-              <option value='option1'>Option 1</option>
-              <option value='option2'>Option 2</option>
-              <option value='option3'>Option 3</option>
+            <Select placeholder='Select option' value={category} onChange={e => setCategory(e.target.value)} >
+              {categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}
             </Select>
           </HStack>
           <HStack>
@@ -91,7 +103,7 @@ export function Products() {
                 Filter by name:
               </Text>
             </Stack>
-            <Input placeholder='Ex: Adidas' />
+            <Input placeholder='Ex: Adidas' value={query} onChange={e => setQuery(e.target.value)}/>
           </HStack>
         </Stack>
       </Center>
@@ -168,7 +180,11 @@ export function Products() {
           </SimpleGrid>
         </Center>
         <Center>
-          <Pagination activePage={activePage} totalPages={totalPage} onPageChange={onChange}/>
+          <Pagination
+            activePage={activePage}
+            totalPages={totalPage}
+            onPageChange={(e, pageInfo) => setActivePage(pageInfo.activePage)}
+          />
         </Center>
       </Stack>
     </>

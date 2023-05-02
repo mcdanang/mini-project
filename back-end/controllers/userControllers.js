@@ -94,7 +94,7 @@ module.exports = {
         try{
             const data = await user.findAll()
             res.status(200).send({
-                message: "Sucessfully get all users data",
+                message: "Successfully get all users data",
                 data
             })
         }catch(err){

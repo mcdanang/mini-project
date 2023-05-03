@@ -17,7 +17,14 @@ module.exports = {
         where: {
           user_id: userData.id
         },
-      })
+      });
+
+      if (req.params.store_id != userStoreData.id) {
+        throw {
+          message: "Unauthorized"
+        };
+      }
+
       req.storeId = userStoreData.id;
       // console.log(req);
       next();

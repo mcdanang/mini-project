@@ -46,6 +46,16 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
+    about_me: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: "Hello, I am a new user on Shopedia. I like to buy clothes and dresses. You can also check my store."
+    },
+    image_url: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: "https://bit.ly/dan-abramov"
+    },
   }, {
     sequelize,
     modelName: 'User',

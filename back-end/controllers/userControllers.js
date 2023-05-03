@@ -106,14 +106,14 @@ module.exports = {
     getUser : async (req,res) => {
         try{
             const userExist = await user.findOne({
-                where: {id: req.params.id},
+                where: {username: req.params.username},
                 include: user_store
             })
             if (!userExist) throw {
-                message: "User ID not found"
+                message: "Username not found"
             }
             res.status(200).send({
-                message: `Sucessfully get data for user_id ${req.params.id}`,
+                message: `Sucessfully get data for user_id ${userExist.id}`,
                 userExist
             })
         }catch(err){

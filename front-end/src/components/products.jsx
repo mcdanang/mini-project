@@ -39,7 +39,7 @@ export function Products() {
         '&c=' + category +
         '&q=' + query
       );
-      console.log(apiUrl);
+      // console.log(apiUrl);
 
       const categoryData = await axios.get("http://localhost:2000/category");
       setCategories(categoryData.data.categories);

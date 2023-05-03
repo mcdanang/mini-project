@@ -12,11 +12,14 @@ import {
 } from '@chakra-ui/react';
 import axios from "axios";
 import { useState, useEffect } from 'react';
-import { MdOutlineStorefront } from "react-icons/md";
+import { MdOutlineStorefront, MdCircle } from "react-icons/md";
 import { Pagination } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css'
+import { useParams } from 'react-router-dom';
 
-export function Products() {
+export function MyProducts() {
+  const params = useParams();
+
   //states for fetching products & categories data
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -29,16 +32,20 @@ export function Products() {
   const [sortType, setSortType] = useState('');
   const [category, setCategory] = useState('');
   const [query, setQuery] = useState('');
+  // const [store, setStore] = useState('');
 
   useEffect(() => {
     async function getProducts() {
+      const storeData = await axios.get("http://localhost:2000/store/" + params.storename);
+      console.log(storeData);
+
       setApiUrl(
         'http://localhost:2000/product?' + 
         'p=' + activePage +
         '&s=' + sortType +
         '&c=' + category +
         '&q=' + query +
-        '&active=1'
+        '&store=' + storeData.data.data.id
       );
       // console.log(apiUrl);
 
@@ -50,7 +57,7 @@ export function Products() {
       setTotalPage(Math.ceil(productData.data.count / 9));
     }
     getProducts();
-  }, [apiUrl, activePage, sortType, category, query])
+  }, [apiUrl, activePage, sortType, category, query, params])
   
   function rupiah(price) {
     const priceString = price.toString();
@@ -67,14 +74,8 @@ export function Products() {
 
   return (
     <>
-      <Stack align={"center"} my={10}>
-        <Heading fontSize={"4xl"} textAlign={"center"}>
-          Products
-        </Heading>
-      </Stack>
-
       <Center>
-        <Stack spacing={5}>
+        <Stack spacing={5} mt="10">
           <HStack>
             <Stack w={200}>
               <Text fontWeight={600} fontSize={'lg'}>
@@ -174,6 +175,17 @@ export function Products() {
                           {product.User_store.store_name} | {product.User_store.store_address}
                       </Text>
                     </HStack>
+                    {
+                      product.is_active?
+                      <HStack>
+                        <MdCircle color="green"/>
+                        <Text color={'gray.600'}>Active</Text>
+                      </HStack>:
+                      <HStack>
+                        <MdCircle color="red"/>
+                        <Text color={'gray.600'}>Not Active</Text>
+                      </HStack>
+                    }
                   </Stack>
                 </Box>
               )

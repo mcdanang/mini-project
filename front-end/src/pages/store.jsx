@@ -2,6 +2,7 @@ import { Tabs, TabList, TabPanels, Tab, TabPanel, TabIndicator, Heading, VStack 
 import { Navbar } from "../components/navbar";
 import { StoreProfile } from "../components/storeProfile";
 import { ProductDrawer } from "../components/productDrawer";
+import { MyProducts } from "../components/myProducts";
 
 export function Store() {
   return (
@@ -23,9 +24,10 @@ export function Store() {
 
         <TabPanels>
           <TabPanel>
-            <VStack>
-              <Heading>Your Products</Heading>
+            <VStack pt="10">
+              <Heading>My Products</Heading>
               <ProductDrawer/>
+              <MyProducts/>
             </VStack>
           </TabPanel>
           <TabPanel>

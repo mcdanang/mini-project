@@ -20,10 +20,15 @@ export const ProductForm = () => {
   const [store, setStore] = useState({});
   const params = useParams();
 
+  const [categories, setCategories] = useState([]);
+
   useEffect(() => {
     async function getUser() {
       const storeData = await axios.get("http://localhost:2000/store/" + params.storename);
       setStore(storeData.data.data);
+
+      const categoryData = await axios.get("http://localhost:2000/category");
+      setCategories(categoryData.data.categories);
     }
     getUser();
   }, [params])
@@ -136,8 +141,7 @@ export const ProductForm = () => {
                       <FormControl id="category_id" isRequired>
                         <FormLabel>Category</FormLabel>
                         <Field type="number" as="select" name="category_id" style={inputStyle} control="select">
-                          <option key="1" value="1">1</option>
-                          <option key="2" value="2">2</option>
+                          {categories.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}
                         </Field>
                         <ErrorMessage component="div" name="category_id" style={errorStyle} />
                       </FormControl>

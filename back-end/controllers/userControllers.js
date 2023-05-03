@@ -1,4 +1,3 @@
-const { Sequelize}=require("sequelize")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const db = require("../models")
@@ -76,12 +75,19 @@ module.exports = {
                 message: "Incorrect password"
             }
 
+            const storeExist = await user_store.findOne({
+                where: {
+                    user_id: userExist.id
+                },
+            })
+
             const payload = { id: userExist.id }
             const token = jwt.sign(payload, process.env.TOKEN_KEY, { expiresIn: "1h"})
 
             res.status(200).send({
                 message: "Login Success",
-                data: userExist,
+                user: userExist,
+                store: storeExist,
                 token
             })
         } catch (err) {

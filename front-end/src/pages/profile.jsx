@@ -1,11 +1,11 @@
-import { Products } from "../components/products";
+import { UserProfile } from "../components/userProfile";
 import { Navbar } from "../components/navbar";
 
 export const HomePage = () => {
   return (
     <>
       <Navbar />
-      <Products />
+      <UserProfile />
     </>
   );
 };

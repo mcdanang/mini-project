@@ -9,16 +9,17 @@ import {
 } from '@chakra-ui/react'
 import { useDisclosure } from '@chakra-ui/react'
 import { useRef } from "react";
-import { ProductForm } from "./productForm";
+import { MdEdit, MdAdd } from "react-icons/md";
 
-export function ProductDrawer() {
+export function ProductDrawer(props) {
+  const Component = props.component;
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef()
 
   return (
     <>
-      <Button ref={btnRef} colorScheme='blue' onClick={onOpen}>
-        Create New Product
+      <Button leftIcon={props.editIcon?<MdEdit />:<MdAdd/>} ref={btnRef} colorScheme='blue' onClick={onOpen}>
+        {props.buttonName}
       </Button>
       <Drawer
         isOpen={isOpen}
@@ -29,10 +30,10 @@ export function ProductDrawer() {
         <DrawerOverlay />
         <DrawerContent minW="sm">
           <DrawerCloseButton />
-          <DrawerHeader>Create New Product</DrawerHeader>
+          <DrawerHeader>{props.title}</DrawerHeader>
 
           <DrawerBody>
-            <ProductForm/>
+            <Component product={props.product}/>
           </DrawerBody>
         </DrawerContent>
       </Drawer>

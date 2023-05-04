@@ -15,6 +15,7 @@ import { useState, useEffect } from 'react';
 import { MdOutlineStorefront } from "react-icons/md";
 import { Pagination } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css'
+import { rupiah } from '../helper/rupiah';
 
 export function Products() {
   //states for fetching products & categories data
@@ -51,19 +52,6 @@ export function Products() {
     }
     getProducts();
   }, [apiUrl, activePage, sortType, category, query])
-  
-  function rupiah(price) {
-    const priceString = price.toString();
-    const len = priceString.length;
-    let str = "";
-    for (let i = 0; i < len; i++) {
-      str += priceString[i];
-      if ((len - i - 1) % 3 === 0 && i !== len - 1) {
-        str += ".";
-      }
-    }
-    return `Rp${str}`;
-  }
 
   return (
     <>

@@ -3,6 +3,7 @@ import { Navbar } from "../components/navbar";
 import { StoreProfile } from "../components/storeProfile";
 import { ProductDrawer } from "../components/productDrawer";
 import { MyProducts } from "../components/myProducts";
+import { ProductForm } from "../components/productForm";
 
 export function Store() {
   return (
@@ -26,7 +27,12 @@ export function Store() {
           <TabPanel>
             <VStack pt="10">
               <Heading>My Products</Heading>
-              <ProductDrawer/>
+              <ProductDrawer 
+                product={{}} 
+                title="Create New Product" 
+                component={ProductForm}
+                buttonName="Create new product"
+              />
               <MyProducts/>
             </VStack>
           </TabPanel>

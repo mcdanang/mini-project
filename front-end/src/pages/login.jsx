@@ -25,7 +25,6 @@ export const LoginForm = () => {
         password: document.getElementById("password").value,
       };
 
-      console.log(data);
       const result = await axios.post("http://localhost:2000/user/login", data);
 
       document.getElementById("username").value = "";
@@ -39,7 +38,9 @@ export const LoginForm = () => {
       });
 
       localStorage.setItem("token", result.data.token);
-      localStorage.setItem("username", result.data.data.username);
+      localStorage.setItem("username", result.data.user.username);
+      localStorage.setItem("store_name", result.data.store.store_name);
+      console.log(result);
       setTimeout(() => {
         navigate("/");
       }, 1500);

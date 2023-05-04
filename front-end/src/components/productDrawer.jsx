@@ -33,7 +33,7 @@ export function ProductDrawer(props) {
           <DrawerHeader>{props.title}</DrawerHeader>
 
           <DrawerBody>
-            <Component product={props.product}/>
+            <Component data={props.data}/>
           </DrawerBody>
         </DrawerContent>
       </Drawer>

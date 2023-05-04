@@ -18,14 +18,14 @@ import * as Yup from "yup";
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-export const EditForm = (props) => {
+export const UpdateProductForm = (props) => {
   const token = localStorage.getItem("token");
   const [store, setStore] = useState({});
   const params = useParams();
 
   const [categories, setCategories] = useState([]);
 
-  const product = props.product;
+  const product = props.data;
   const [isActive, setIsActive] = useState(product.is_active);
   
   useEffect(() => {

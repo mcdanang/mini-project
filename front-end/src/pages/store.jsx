@@ -1,9 +1,11 @@
-import { Tabs, TabList, TabPanels, Tab, TabPanel, TabIndicator, Heading, VStack } from '@chakra-ui/react'
+import { Tabs, TabList, TabPanels, Tab, TabPanel, TabIndicator, Heading, VStack, Center } from '@chakra-ui/react'
 import { Navbar } from "../components/navbar";
 import { StoreProfile } from "../components/storeProfile";
 import { ProductDrawer } from "../components/productDrawer";
 import { MyProducts } from "../components/myProducts";
-import { ProductForm } from "../components/productForm";
+import { ProductForm } from "../components/forms/productForm";
+import { Categories } from "../components/categories";
+import { CategoryForm } from "../components/forms/categoryForm";
 
 export function Store() {
   return (
@@ -37,10 +39,19 @@ export function Store() {
             </VStack>
           </TabPanel>
           <TabPanel>
-            <p>two!</p>
+            <VStack pt="10">
+              <Heading>Category List</Heading>
+              <ProductDrawer 
+                product={{}} 
+                title="Create New Category" 
+                component={CategoryForm}
+                buttonName="Create new category"
+              />
+              <Categories/>
+            </VStack>
           </TabPanel>
           <TabPanel>
-            <p>three!</p>
+            <Center mt="20" fontSize={40}>Reporting Coming Soon!</Center>
           </TabPanel>
         </TabPanels>
       </Tabs>

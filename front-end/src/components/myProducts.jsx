@@ -22,7 +22,7 @@ import 'semantic-ui-css/semantic.min.css'
 import { useParams } from 'react-router-dom';
 import { rupiah } from '../helper/rupiah';
 import { ProductDrawer } from "./productDrawer";
-import { EditForm } from "./editForm";
+import { UpdateProductForm } from "./forms/updateProductForm";
 import { RefreshButton } from "../buttons/refreshButton";
 
 export function MyProducts() {
@@ -45,7 +45,7 @@ export function MyProducts() {
   useEffect(() => {
     async function getProducts() {
       const storeData = await axios.get("http://localhost:2000/store/" + params.storename);
-      console.log(storeData);
+      // console.log(storeData);
 
       setApiUrl(
         'http://localhost:2000/product?' + 
@@ -127,7 +127,7 @@ export function MyProducts() {
               <Tbody>
                 {products.map((product, index) => {
                   return (
-                    <Tr>
+                    <Tr key={product.id}>
                       <Td>{(activePage - 1) * 9 + index + 1}</Td>
                       <Td>{product.name}</Td>
                       <Td>
@@ -163,9 +163,9 @@ export function MyProducts() {
                       </Td>
                       <Td>
                         <ProductDrawer 
-                          product={product} 
+                          data={product} 
                           title="Edit Product Data" 
-                          component={EditForm}
+                          component={UpdateProductForm}
                           buttonName="Edit"
                           editIcon={true}
                         />

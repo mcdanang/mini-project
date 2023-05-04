@@ -5,7 +5,7 @@ const sequelize = db.sequelize;
 module.exports = {
   getGrossIncome: async (req, res) => {
     try {
-      const storeId = parseInt(req.params.store_id);
+      const storeId = req.storeId
       let startDate, endDate;
   
       if (req.query.from && req.query.to) {
@@ -13,7 +13,7 @@ module.exports = {
         endDate = new Date(req.query.to).toISOString().slice(0, 10);
       } else {
         startDate = new Date();
-        startDate.setDate(startDate.getDate() - 6);
+        startDate.setDate(startDate.getDate() - 7);
         endDate = new Date().toISOString().slice(0, 10);
       }
   
@@ -45,7 +45,7 @@ module.exports = {
 
   getTotalTransaction: async (req, res) => {
     try {
-      const storeId = parseInt(req.params.store_id);
+      const storeId = req.storeId
       let startDate, endDate;
   
       if (req.query.from && req.query.to) {
@@ -53,7 +53,7 @@ module.exports = {
         endDate = new Date(req.query.to).toISOString().slice(0, 10);
       } else {
         startDate = new Date();
-        startDate.setDate(startDate.getDate() - 6);
+        startDate.setDate(startDate.getDate() - 7);
         endDate = new Date().toISOString().slice(0, 10);
       }
   
@@ -84,21 +84,23 @@ module.exports = {
   },
 
   getTopSellingProducts: async (req, res) => {
-    try {
-      const storeId = parseInt(req.params.store_id);
+    try {  
+      const storeId = req.storeId
+      const categoryId = req.query.c 
 
       const result = await sequelize.query(
         `SELECT product_name, SUM(qty) AS total_qty_sold
         FROM transaction_details
         JOIN products ON transaction_details.ProductId = products.id
         JOIN transaction_headers ON transaction_details.TransactionHeaderId = transaction_headers.id
-        WHERE store_id = :store_id
+        WHERE store_id = :store_id ${categoryId ? 'AND category_id = :category_id' : ''} 
         GROUP BY product_name
         ORDER BY total_qty_sold DESC
         LIMIT 5`,
         {
           replacements: {
-            store_id: storeId
+            store_id: storeId,
+            category_id: categoryId 
           },
           type: Sequelize.QueryTypes.SELECT
         }
@@ -112,42 +114,8 @@ module.exports = {
       console.log(err);
       res.status(400).send(err);
     }
-  },
-  
-  getTopSellingProductsByCategory: async (req, res) => {
-    try {
-      const storeId = parseInt(req.params.store_id);
-      const categoryId = parseInt(req.params.category_id);
-
-      const result = await sequelize.query(
-        `SELECT product_name, SUM(qty) AS total_qty_sold
-        FROM transaction_details
-        JOIN products ON transaction_details.ProductId = products.id
-        JOIN transaction_headers ON transaction_details.TransactionHeaderId = transaction_headers.id
-        WHERE store_id = :store_id AND category_id = :category_id
-        GROUP BY product_name
-        ORDER BY total_qty_sold DESC
-        LIMIT 5`,
-        {
-          replacements: {
-            store_id: storeId,
-            category_id: categoryId
-          },
-          type: Sequelize.QueryTypes.SELECT
-        }
-      );
-
-      res.status(200).json({
-        message: "top selling report by category retrieved",
-        data: result
-      });
-    } catch (err) {
-      console.log(err);
-      res.status(400).send(err);
-    }
   }
 
-  
 };
 
 

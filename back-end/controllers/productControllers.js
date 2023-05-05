@@ -5,8 +5,8 @@ const userStore = db.User_store;
 const { Op } = require("sequelize");
 
 module.exports = {
-    createProduct : async (req, res) => {
-        try {
+  createProduct : async (req, res) => {
+   try {
             const { name, description, price, category_id, image_url, store_id } = req.body;
             if (!name || !description || !price || !category_id || !image_url || !store_id) {
                 throw {
@@ -117,5 +117,5 @@ module.exports = {
             console.log(err);
             res.status(400).send(err)
         }
-    },
+    }     
 }

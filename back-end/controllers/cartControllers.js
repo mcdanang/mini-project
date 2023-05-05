@@ -120,7 +120,7 @@ module.exports = {
           );
 
           res.status(200).send({
-            message: "Successfully update product qty",
+            message: "Successfully reduce product qty",
             user_id: req.userId
           });
 

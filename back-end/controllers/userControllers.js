@@ -67,7 +67,7 @@ module.exports = {
                 message: "User not found"
             }
 
-            console.log(userExist);
+            // console.log(userExist);
 
             const isvalid = await bcrypt.compare(password, userExist.password)
 

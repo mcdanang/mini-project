@@ -17,7 +17,8 @@ module.exports = {
         where: {
           user_id: userData.id
         },
-      })
+      });
+
       req.storeId = userStoreData.id;
       // console.log(req);
       next();
@@ -26,5 +27,6 @@ module.exports = {
       console.log(err);
       res.status(400).send(err)
     }
-  },
+  }
+
 }

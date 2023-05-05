@@ -3,7 +3,8 @@ const storeControllers = require("./storeControllers")
 const productControllers = require("./productControllers")
 const categoryControllers = require("./categoryControllers")
 const transactionControllers = require("./transactionControllers")
+const reportingControllers = require("./reportingControllers")
 
 module.exports = {
-    userControllers, storeControllers, productControllers, categoryControllers, transactionControllers
+    userControllers, storeControllers, productControllers, categoryControllers, transactionControllers, reportingControllers
 }

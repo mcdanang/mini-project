@@ -4,7 +4,6 @@ import { HomePage } from "./pages/home";
 import { LoginForm } from "./pages/login";
 import { RegistrationForm } from "./pages/register";
 import { Profile } from "./pages/profile";
-import { Profile } from "./pages/profile";
 import { Store } from "./pages/store";
 
 const router = createBrowserRouter([

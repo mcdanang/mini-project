@@ -73,6 +73,8 @@ module.exports = {
             const categoryId = parseInt(req.query.c) || null;
             const productName = req.query.q || null;
             const sortType = req.query.s || "none";
+            const storeId = parseInt(req.query.store) || null;
+            const isActive = parseInt(req.query.active) || null;
 
             const sortMap = {
                 az: [["name", "ASC"]],
@@ -83,12 +85,16 @@ module.exports = {
             };
 
             const categoryQuery = categoryId? { category_id: categoryId } : {};
+            const storeQuery = storeId? { store_id: storeId } : {};
             const productQuery = productName? { name: {[Op.like]: '%' + productName + '%'} } : {};
+            const activeQuery = isActive? { is_active: isActive } : {};
             
             const products = await product.findAndCountAll({
                 where: {
                     ...categoryQuery,
-                    ...productQuery
+                    ...productQuery,
+                    ...storeQuery,
+                    ...activeQuery
                 },
                 include: [{
                     model: category,

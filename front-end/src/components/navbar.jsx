@@ -58,9 +58,9 @@ export const Navbar = () => {
                   mr="2"
                 />
                 <MenuList>
-                  <MenuItem onClick={() => navigate("/")}>Show Home Page</MenuItem>
-                  <MenuItem onClick={() => navigate("/profile/" + username)}>Show Profile Page</MenuItem>
-                  <MenuItem onClick={() => navigate("/store/" + storename)}>Show Store Page</MenuItem>
+                  <MenuItem onClick={() => navigate("/")}>Home</MenuItem>
+                  <MenuItem onClick={() => navigate("/profile/" + username)}>My Profile</MenuItem>
+                  <MenuItem onClick={() => navigate("/store/" + storename)}>My Store</MenuItem>
                   <MenuItem onClick={onSignOut}>Sign Out</MenuItem>
                 </MenuList>
               </Menu>

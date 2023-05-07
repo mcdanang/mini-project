@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { Navbar } from "../components/navbar";
 import { StoreProfile } from "../components/storeProfile";
-import { ProductDrawer } from "../components/productDrawer";
+import { FormDrawer } from "../components/formDrawer";
 import { MyProducts } from "../components/myProducts";
 import { ProductForm } from "../components/forms/productForm";
 import { Categories } from "../components/categories";
@@ -49,7 +49,7 @@ export function Store() {
           <TabPanel>
             <VStack pt="10">
               <Heading>My Products</Heading>
-              <ProductDrawer
+              <FormDrawer
                 product={{}}
                 title="Create New Product"
                 component={ProductForm}
@@ -61,7 +61,7 @@ export function Store() {
           <TabPanel>
             <VStack pt="10">
               <Heading>Category List</Heading>
-              <ProductDrawer
+              <FormDrawer
                 product={{}}
                 title="Create New Category"
                 component={CategoryForm}

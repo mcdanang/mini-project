@@ -8,6 +8,9 @@ module.exports = {
   createTransaction: async (req, res) => {
     try {
       const { cart } = req.body;
+      if (cart.length == 0) throw {
+        message: "Your cart is empty"
+      }
       const totalPrice = cart.reduce((total, product) => {
         return total + product.product_price * product.qty;
       }, 0);

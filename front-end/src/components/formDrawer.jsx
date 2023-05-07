@@ -11,7 +11,7 @@ import { useDisclosure } from '@chakra-ui/react'
 import { useRef } from "react";
 import { MdEdit, MdAdd } from "react-icons/md";
 
-export function ProductDrawer(props) {
+export function FormDrawer(props) {
   const Component = props.component;
   const { isOpen, onOpen, onClose } = useDisclosure()
   const btnRef = useRef()

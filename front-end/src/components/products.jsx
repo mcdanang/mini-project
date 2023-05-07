@@ -9,6 +9,7 @@ import {
   HStack,
   Select,
   Input,
+  Button
 } from '@chakra-ui/react';
 import axios from "axios";
 import { useState, useEffect } from 'react';
@@ -16,6 +17,8 @@ import { MdOutlineStorefront } from "react-icons/md";
 import { Pagination } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css'
 import { rupiah } from '../helper/rupiah';
+import { MdAddShoppingCart } from "react-icons/md";
+import { useRef } from "react";
 
 export function Products() {
   //states for fetching products & categories data
@@ -30,6 +33,9 @@ export function Products() {
   const [sortType, setSortType] = useState('');
   const [category, setCategory] = useState('');
   const [query, setQuery] = useState('');
+
+  const btnRef = useRef()
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     async function getProducts() {
@@ -52,6 +58,14 @@ export function Products() {
     }
     getProducts();
   }, [apiUrl, activePage, sortType, category, query])
+
+  async function addToCart(product) {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    await axios.post("http://localhost:2000/cart/add", product, config);
+    console.log("success add to cart");
+  }
 
   return (
     <>
@@ -162,6 +176,18 @@ export function Products() {
                           {product.User_store.store_name} | {product.User_store.store_address}
                       </Text>
                     </HStack>
+                    <Stack>
+                      <Button leftIcon={<MdAddShoppingCart/>} ref={btnRef} colorScheme='blue' onClick={() => addToCart(
+                        {
+                          "ProductId": product.id,
+                          "product_name": product.name,
+                          "product_price": product.price,
+                          "product_image_url": product.image_url
+                        }
+                      )} >
+                        Add to cart
+                      </Button>
+                    </Stack>
                   </Stack>
                 </Box>
               )

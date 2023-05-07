@@ -12,7 +12,7 @@ import {
 import axios from "axios";
 import { useState, useEffect } from 'react';
 import 'semantic-ui-css/semantic.min.css'
-import { ProductDrawer } from './productDrawer';
+import { FormDrawer } from './formDrawer';
 import { UpdateCategoryForm } from './forms/updateCategoryForm';
 import { RefreshButton } from "../buttons/refreshButton";
 
@@ -54,7 +54,7 @@ export function Categories() {
                       <Td>{index + 1}</Td>
                       <Td>{category.name}</Td>
                       <Td>
-                        <ProductDrawer 
+                        <FormDrawer 
                           data={category} 
                           title="Edit Category Data" 
                           component={UpdateCategoryForm}

@@ -21,7 +21,7 @@ import { Pagination } from 'semantic-ui-react'
 import 'semantic-ui-css/semantic.min.css'
 import { useParams } from 'react-router-dom';
 import { rupiah } from '../helper/rupiah';
-import { ProductDrawer } from "./productDrawer";
+import { FormDrawer } from "./formDrawer";
 import { UpdateProductForm } from "./forms/updateProductForm";
 import { RefreshButton } from "../buttons/refreshButton";
 
@@ -141,8 +141,8 @@ export function MyProducts() {
                       <Td>
                         <Image
                           rounded={'lg'}
-                          height={30}
-                          width={30}
+                          height={20}
+                          width={20}
                           objectFit={'cover'}
                           src={product.image_url}
                           />
@@ -162,7 +162,7 @@ export function MyProducts() {
                         }
                       </Td>
                       <Td>
-                        <ProductDrawer 
+                        <FormDrawer 
                           data={product} 
                           title="Edit Product Data" 
                           component={UpdateProductForm}

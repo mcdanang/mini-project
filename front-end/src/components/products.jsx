@@ -19,6 +19,7 @@ import 'semantic-ui-css/semantic.min.css'
 import { rupiah } from '../helper/rupiah';
 import { MdAddShoppingCart } from "react-icons/md";
 import { useRef } from "react";
+import Swal from "sweetalert2";
 
 export function Products() {
   //states for fetching products & categories data
@@ -60,11 +61,21 @@ export function Products() {
   }, [apiUrl, activePage, sortType, category, query])
 
   async function addToCart(product) {
-    const config = {
-      headers: { Authorization: `Bearer ${token}` },
-    };
-    await axios.post("http://localhost:2000/cart/add", product, config);
-    console.log("success add to cart");
+    try {
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+      const result = await axios.post("http://localhost:2000/cart/add", product, config);
+      console.log("success add to cart");
+      Swal.fire({
+        icon: "success",
+        title: result.data.message,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (
@@ -176,18 +187,24 @@ export function Products() {
                           {product.User_store.store_name} | {product.User_store.store_address}
                       </Text>
                     </HStack>
-                    <Stack>
-                      <Button leftIcon={<MdAddShoppingCart/>} ref={btnRef} colorScheme='blue' onClick={() => addToCart(
-                        {
-                          "ProductId": product.id,
-                          "product_name": product.name,
-                          "product_price": product.price,
-                          "product_image_url": product.image_url
-                        }
-                      )} >
-                        Add to cart
-                      </Button>
-                    </Stack>
+                    {
+                      token?
+                      (
+                        <Stack>
+                        <Button leftIcon={<MdAddShoppingCart/>} ref={btnRef} colorScheme='blue' onClick={() => addToCart(
+                          {
+                            "ProductId": product.id,
+                            "product_name": product.name,
+                            "product_price": product.price,
+                            "product_image_url": product.image_url
+                          }
+                        )} >
+                          Add to cart
+                        </Button>
+                      </Stack>
+                      ) :
+                      <></>
+                    }
                   </Stack>
                 </Box>
               )

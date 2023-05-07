@@ -42,14 +42,14 @@ export const Navbar = () => {
             <Text fontSize={36} fontWeight={600} color="blue.500">SHOPEDIA</Text>
           </Link>
         </Flex>
-        <Flex justify="space-evenly" align="center" ml="auto">
-          <Link to={cartLink}>
-            <MdShoppingCart size="25"/>
-          </Link>
-        </Flex>
-        <Flex justify="space-evenly" align="center" ml="10" mr="4">
+        <Flex justify="space-evenly" align="center" ml="auto" mr="4">
           {token ? (
             <>
+              <Flex justify="space-evenly" align="center" ml="auto" mr="10">
+                <Link to={cartLink}>
+                  <MdShoppingCart size="25"/>
+                </Link>
+              </Flex>
               <Menu>
                 <Avatar
                   as={MenuButton}

@@ -1,14 +1,7 @@
 import {
-  Box,
   Center,
-  Heading,
-  Text,
   Stack,
-  Image,
-  SimpleGrid,
-  HStack,
   Select,
-  Input,
   Table,
   Thead,
   Tbody,
@@ -45,7 +38,7 @@ export function TopSelling() {
 
     getCategories();
     getReport();
-  }, [apiUrl, category]);
+  }, [apiUrl, category, token]);
 
   function handleCategoryChange(event) {
     setApiUrl(

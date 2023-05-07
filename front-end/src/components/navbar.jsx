@@ -10,12 +10,15 @@ import {
   MenuItem,
 } from "@chakra-ui/react";
 import { useNavigate, Link } from "react-router-dom";
+import { MdShoppingCart } from "react-icons/md";
 
 export const Navbar = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
   const storename = localStorage.getItem("store_name");
+
+  const cartLink = "/cart/" + username;
 
   const onSignOut = () => {
     localStorage.removeItem("token");
@@ -39,7 +42,12 @@ export const Navbar = () => {
             <Text fontSize={36} fontWeight={600} color="blue.500">SHOPEDIA</Text>
           </Link>
         </Flex>
-        <Flex justify="space-evenly" align="center" ml="auto" mr="4">
+        <Flex justify="space-evenly" align="center" ml="auto">
+          <Link to={cartLink}>
+            <MdShoppingCart size="25"/>
+          </Link>
+        </Flex>
+        <Flex justify="space-evenly" align="center" ml="10" mr="4">
           {token ? (
             <>
               <Menu>

@@ -15,7 +15,7 @@ module.exports = {
         res.status(200).send({
           message: "Cart data successfully retrieved",
           user_id: req.userId,
-          data: cart
+          data: cart? cart : []
         });
       })
 

@@ -21,7 +21,7 @@ import { ProductForm } from "../components/forms/productForm";
 import { Categories } from "../components/categories";
 import { CategoryForm } from "../components/forms/categoryForm";
 import { GrossIncome } from "../components/reportings/grossIncome";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { TotalTransaction } from "../components/reportings/totalTransaction";
 import { TopSelling } from "../components/reportings/topSelling";
 
@@ -98,9 +98,9 @@ export function Store() {
               </HStack>
             </Center>
 
-            {report == "option1" ? (
+            {report === "option1" ? (
               <GrossIncome />
-            ) : report == "option2" ? (
+            ) : report === "option2" ? (
               <TotalTransaction />
             ) : (
               <TopSelling />

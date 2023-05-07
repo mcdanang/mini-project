@@ -1,11 +1,7 @@
 import {
-  Box,
   Center,
-  Heading,
   Text,
   Stack,
-  Image,
-  SimpleGrid,
   Input,
   Table,
   Thead,
@@ -45,7 +41,7 @@ export function GrossIncome() {
       setReport(reportData.data.data);
     }
     getReport();
-  }, [apiUrl, startDate, endDate]);
+  }, [apiUrl, startDate, endDate, token]);
 
   return (
     <>

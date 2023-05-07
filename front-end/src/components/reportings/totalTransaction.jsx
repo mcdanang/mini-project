@@ -1,13 +1,8 @@
 import {
-  Box,
   Center,
-  Heading,
   Text,
   Stack,
-  Image,
-  SimpleGrid,
   HStack,
-  Select,
   Input,
   Table,
   Thead,
@@ -48,7 +43,7 @@ export function TotalTransaction() {
       setTransaction(reportData.data.data);
     }
     getReport();
-  }, [apiUrl, startDate, endDate]);
+  }, [apiUrl, startDate, endDate, token]);
 
   return (
     <>
